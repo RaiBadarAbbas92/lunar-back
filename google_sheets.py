@@ -1,70 +1,97 @@
+import os
+import json
+from typing import List, Dict, Union
+from datetime import datetime
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-import os
-from typing import List, Dict
-from datetime import datetime
-import traceback  # For better error logging
 
+# Constants
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-SPREADSHEET_ID = os.getenv('GOOGLE_SHEET_ID') or '1GAGH6xAKaL5hfuPO-BE7_KOySTzv35BkhVga1Zp4t8Y'
+DEFAULT_SHEET_NAME = 'Sheet1'  # Fallback if 'lunar' doesn't exist
 
 def get_google_sheets_service():
+    """Initialize Google Sheets service using Vercel env variables"""
     try:
-        credentials = service_account.Credentials.from_service_account_file(
-            'lunar-studio-user-query.json', scopes=SCOPES)
+        creds_json = os.getenv('GOOGLE_CREDENTIALS')
+        if not creds_json:
+            raise ValueError("GOOGLE_CREDENTIALS environment variable not set")
+            
+        credentials = service_account.Credentials.from_service_account_info(
+            json.loads(creds_json),
+            scopes=SCOPES
+        )
         return build('sheets', 'v4', credentials=credentials)
     except Exception as e:
-        print(f"Auth Error: {str(e)}")
+        print(f"Service initialization failed: {str(e)}")
         return None
 
 def format_datetime(dt: datetime) -> str:
-    """Helper function to format datetime objects"""
+    """Safe datetime formatter"""
     return dt.strftime("%Y-%m-%d %H:%M:%S") if dt else ""
 
-def get_form_value(form, field_name):
-    """Universal accessor for form data (works with both objects and dicts)"""
-    if isinstance(form, dict):
-        return form.get(field_name, '')
-    return getattr(form, field_name, '')
-
-def sync_forms_to_sheet(forms: List):
-    service = get_google_sheets_service()
-    if not service:
-        return False
-
-    # Use the actual sheet name we found in debug ('Sheet1')
-    SHEET_NAME = 'Sheet1'
-    RANGE_NAME = f"{SHEET_NAME}!A:H"
-
+def get_form_value(form: Union[Dict, object], field: str) -> str:
+    """Universal field accessor for both dicts and objects"""
     try:
+        if isinstance(form, dict):
+            return str(form.get(field, ''))
+        return str(getattr(form, field, ''))
+    except Exception:
+        return ''
+
+def sync_forms_to_sheet(forms: List[Union[Dict, object]]) -> bool:
+    """Main sync function optimized for Vercel"""
+    try:
+        # Initialize service
+        service = get_google_sheets_service()
+        if not service:
+            return False
+
+        spreadsheet_id = os.getenv('GOOGLE_SHEET_ID')
+        if not spreadsheet_id:
+            print("GOOGLE_SHEET_ID not set")
+            return False
+
+        # Determine sheet name
+        sheet_metadata = service.spreadsheets().get(
+            spreadsheetId=spreadsheet_id,
+            fields="sheets(properties(title))"
+        ).execute()
+        
+        sheets = [s['properties']['title'] for s in sheet_metadata.get('sheets', [])]
+        sheet_name = 'lunar' if 'lunar' in sheets else DEFAULT_SHEET_NAME
+        range_name = f"{sheet_name}!A:H"
+
         # Clear existing data
         service.spreadsheets().values().clear(
-            spreadsheetId=SPREADSHEET_ID,
-            range=RANGE_NAME,
+            spreadsheetId=spreadsheet_id,
+            range=range_name,
             body={}
         ).execute()
 
-        # Prepare header row
-        values = [['ID', 'Name', 'Email', 'Phone', 'Message', 'Company', 'Service', 'Created At']]
+        # Prepare data
+        headers = ['ID', 'Name', 'Email', 'Phone', 'Message', 'Company', 'Service', 'Created At']
+        values = [headers]
         
-        # Process each form
         for form in forms:
             values.append([
-                str(get_form_value(form, 'id')),
+                get_form_value(form, 'id'),
                 get_form_value(form, 'name'),
                 get_form_value(form, 'email'),
                 get_form_value(form, 'phone_number'),
                 get_form_value(form, 'message'),
                 get_form_value(form, 'company'),
                 get_form_value(form, 'service'),
-                format_datetime(get_form_value(form, 'created_at'))
+                format_datetime(
+                    get_form_value(form, 'created_at') if isinstance(get_form_value(form, 'created_at'), datetime)
+                    else None
+                )
             ])
 
-        # Update sheet with new data
+        # Batch update
         service.spreadsheets().values().update(
-            spreadsheetId=SPREADSHEET_ID,
-            range=RANGE_NAME,
+            spreadsheetId=spreadsheet_id,
+            range=f"{sheet_name}!A1",
             valueInputOption='USER_ENTERED',
             body={'values': values}
         ).execute()
@@ -72,9 +99,9 @@ def sync_forms_to_sheet(forms: List):
         return True
 
     except HttpError as error:
-        error_details = error.content.decode() if hasattr(error, 'content') else str(error)
-        print(f"Google Sheets API Error:\n{error_details}")
+        error_details = getattr(error, 'content', str(error))
+        print(f"Google Sheets API Error: {error_details}")
         return False
     except Exception as e:
-        print(f"Unexpected Error: {str(e)}\n{traceback.format_exc()}")
+        print(f"Unexpected error: {str(e)}")
         return False
