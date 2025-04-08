@@ -38,5 +38,3 @@ ENV/
 # Vercel
 .vercel/
 
-# Google Sheets credentials
-lunar-studio-user-query.json
