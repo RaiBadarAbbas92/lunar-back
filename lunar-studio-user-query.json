@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "lunar-studio-user-query",
+  "private_key_id": "73626a1ff80452b1e78c3433f08fbd7a7ee4efe3",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCbOZywHikVoNUo\nXmr54jj+II3bYNIYMoJLODvfvrlxPo6L7KiEz4NqXv82KFtFniCqeatykoxwbSyQ\neD9xB7v6Fpmth9q9NeLeybJNCpiTBVsLlJPSz8qF0shOjCDqQr2w1gUlaPLnLUpr\npzRhL2PklSidHkuY95vEF4bAL4dSvsU+bgQDO10Uzzq9uFnRdHSEnbO4tkSi/pgm\n5qUD2j/soin+n+bGDEHEEaDlodNrmYITLQDx+GndTIArVJ5nZmrA/uKP+iAcUUYK\nmi1OaAWTJUif+vsrBqlATO62wGCEXZZeOBGUXhlvrk4oZKkcq9hOlfBcZZU8OzLC\nDKocmaNzAgMBAAECggEAO0LlB7YUEF5NUvKtG8aa5KaQEgOmYjeSV95ZuYPKr6nm\n6RPKiJ3i+a7X95izs+H5bawy4PSDKn77xxIpgmEmCoYrWL1nrNoQSecuK8ySUHr4\ndfTc9NyA4NOGxron7NfbLNKgt1YYelrnsS7uR/Y8SG4LyeRhjz5lGRm0R9Y9b0Cu\nvSSA7//I11jYkbGyRHh4SrIQMzKOc1nOxui6HgT/hdyZrSVqvQ2SfTkCY8ZCRsBm\nlUDCVH7gO4cF89crQ8LLgnFyEzcpDjPop9oeYILYbzfyrSuGtZVLucwYqt+PRhDR\nzuLMVM5GvVZ5KZRAvr7xIPxr+0rPio+n6FTpnyIf/QKBgQDIwSNeC9RmeGAlf8AA\nI1JZ5qgSROuYyCuOzP2v8jj8aFaUBHlJRAp2ahU1R/llueGXyIXaorUMKNnr7NGX\ntGHlXQy0LtaRV7uesMkqkngMMvXCIZ9Fy+idzt/iKi5LzoZnv6nUxO69zUJZdSQY\nBU1Z44f+S+ENf2UntVHl545TdQKBgQDF8P5HXBwTHr81I4IqVjskpb37ZU5kPAWi\nudduJv9aaqNjVVGS6H+9awwYE7QfaXyO5ruORTlNCJBrdl67y1z4doBikGqwr+WJ\n2Gd8EHlLCeYIZJUuQHVSgXnf7Jt41efMricR6xcF20lslqvLu9hveHUV7JOAMsDe\ngaxwAsTGRwKBgQCoL66qpqx+YJDkOZ+oPe9LJANgst7SM7jSPQi38+0sAVmvTgQy\njk9Zn0w/RBo70DugRr1lSvT0x/CyR8fcGaH+XzM6bRcT0vV7YE5YXTc3uSXNSw+9\nkLREKUHFn2MD3XUazCbC+22sE59nhM0FVsPT79xJ/lYAUd90IeMIAjNp1QKBgQC2\n0l7ZpB6eHlD2kKRh3CFmONtfPfOIqtN9t+5dZBGH/mSIk73zVWDen+ecuV4tgS21\ngzEKN6+0EcvqJXtcMnndVv4/iymvpdb5WXJDaafOAgeACv6qqIh0OvhJNW1nzxH4\nv4WAjEVIeIC5lfR5CTffxT9Hj6mwx6/SE60kC7qZcwKBgQDDNFx8f87YKanqy6mM\n8ahPqN6Ed/ToLP/i9uyTcmNjGxonIImZTgcGvucT9yabGhm9SvG6UI06/Us4TGWE\nRvUCUEaFsA/l/LBKmwzKvCUfeo5RFrflb4E9Fgc8iM1odEoNOmppvqb9mTcHjiQn\nGeojhYFkuj44GiaZqU9V0vafcw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "lunar-studio-query@lunar-studio-user-query.iam.gserviceaccount.com",
+  "client_id": "115499482330748033752",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/lunar-studio-query%40lunar-studio-user-query.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
